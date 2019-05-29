@@ -1,8 +1,10 @@
-
 from flask import Flask, render_template, url_for, request, flash, redirect, session
 from forms import SubscribeForm, VerifySubscriptionForm
 from flask_mail import Mail, Message
 from random import randint
+from databaseConnect import Database
+from time import sleep
+
 
 
 app = Flask(__name__)
@@ -22,7 +24,16 @@ app.config['MAIL_USE_SSL'] = True
 
 #Initializing Flask-mail
 mail = Mail(app)
+db = None
 
+while True:
+	db = Database()
+	
+	if db.connected == False:
+		print("Unable to connect: Trying again in 1s")
+		sleep(1)
+	else:
+		break
 
 
 @app.route("/")
@@ -34,6 +45,14 @@ def subscribe():
 	if form.validate_on_submit():
 		
 		if request.method == 'POST':
+			
+			emails = db.getEmails()
+			
+			enteredEmail = str(form.email.data).lower().strip()
+			
+			for emailAddress in emails:
+				if emailAddress[0] == enteredEmail:
+					return redirect(url_for("confirmed"))
 			
 			session['email'] = form.email.data
 			session['code'] = randint(100000,999999)
@@ -86,9 +105,13 @@ def verify():
 @app.route("/confirmed")
 def confirmed():
 	
+	db.addEmail(session['email'])
+	
 	return render_template("confirmed.html", title ="Subscription Confirmed")
 	
 	
+	
+
 	
 	
 if __name__ == "__main__":
