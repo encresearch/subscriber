@@ -1,0 +1,37 @@
+<h1>Please select the alerts you would like to obtain:</h1>
+<form method="POST" action="/api/auth/update_email_preferences/">
+
+	{% if user.air_chemistry %}
+  		<input type="checkbox"name="air_chemistry" checked> Air Chemistry
+  	{% else %}
+  		<input type="checkbox"name="air_chemistry"> Air Chemistry	
+  	{% endif %}
+
+  	{% if user.magnetometer %}
+	  	<input type="checkbox" name="magnetometer"checked> Magnetometer
+	{% else %}
+		<input type="checkbox" name="magnetometer"> Magnetometer
+	{% endif %}
+
+	{% if user.water_ph %}
+	  	<input type="checkbox" name="water_ph" checked> Water pH
+	{% else %}
+		<input type="checkbox" name="water_ph"> Water pH
+	{% endif %}
+
+	{% if user.ammeter %}
+	  	<input type="checkbox" name="ammeter" checked> Ammeter
+	{% else %}
+		<input type="checkbox" name="ammeter"> Ammeter
+	{% endif %}
+
+	{% if user.tec %}
+	  <input type="checkbox" name="tec" checked> TEC
+	{% else %}
+		<input type="checkbox" name="tec"> TEC
+	{% endif %}
+
+	<br>
+	<br>
+	  <input type="submit" value="Submit">
+</form>
