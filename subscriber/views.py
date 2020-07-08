@@ -2,26 +2,29 @@
 
 from flask_login import login_required, current_user
 from flask import (
-    request,
     render_template,
     redirect,
-    flash,
     session
 )
 
 from .app import app, login
 from .models import User
 
+
 @login.unauthorized_handler
 def unauthorized():
-    """Default redirect when tries to access URL that needs authentication, without one."""
+    """
+    Default redirect when tries to access URL that needs authentication,
+    without one.
+    """
     return redirect('/')
 
 
 @app.route('/')
 def index():
     """Main route that will ask user to input his email."""
-    if current_user.is_authenticated:  # If user is already logged in, go to preferences
+    # If user is already logged in, go to preferences
+    if current_user.is_authenticated:
         return redirect('/email_preferences/')
     return render_template('index.html')
 
@@ -29,7 +32,8 @@ def index():
 @app.route('/verify_code/')
 def verify_verification_code():
     """Route to verify code sent through email."""
-    if 'email' not in session:  # Makes sure user comes after email verification
+    # Makes sure user comes after email verification
+    if 'email' not in session:
         return redirect('/')
     return render_template("verify.html")
 

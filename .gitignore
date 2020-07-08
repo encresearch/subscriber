@@ -2,8 +2,8 @@
 *.csv
 __pycache__/
 .pytest_cache/
-.vscode/
 .cache
 .diff
-*.code-workspace
 *.DS_Store
+env/
+venv/

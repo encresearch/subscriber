@@ -7,10 +7,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 
-from .config import Dev, Prod
+from subscriber.config import Dev
 
 app = Flask(__name__)
-# TODO change for Prod
 app.config.from_object(Dev)
 api = Api(app)
 db = SQLAlchemy(app)
