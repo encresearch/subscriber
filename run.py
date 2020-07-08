@@ -8,14 +8,13 @@ def wait_for_postgres():
         db.engine.execute("SELECT 1")
         print("connected to db")
         return None
-    except:
+    except Exception:
         time.sleep(1)
         print("Attempting to connect to the Database...")
         wait_for_postgres()
 
 
-wait_for_postgres()
-db.create_all()
-
 if __name__ == '__main__':
-    app.run()
+    # wait_for_postgres()
+    db.create_all()
+    app.run(host='0.0.0.0')

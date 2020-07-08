@@ -1,5 +1,5 @@
 """This file handle user authentications."""
-from flask import request, redirect, flash, session
+from flask import request, redirect, session
 from flask_restful import Resource
 from flask_login import (
     login_user,
@@ -13,9 +13,9 @@ from .app import (
     login,
     db
 )
-from . utils import email_exists
-from .models import User
-from .mail import send_verification_code
+from subscriber.utils import email_exists
+from subscriber.models import User
+from subscriber.mail import send_verification_code
 
 
 @login.user_loader
@@ -33,7 +33,7 @@ def load_user(user_id):
       is needed."""
     try:
         return User.query.get(int(user_id))
-    except:
+    except Exception:
         return None
 
 
@@ -50,7 +50,13 @@ class VerifyEmail(Resource):
         session['email'] = email
         send_verification_code(email=email, code=verification_code)
         return redirect('/verify_code/')
-api.add_resource(VerifyEmail, '/api/auth/verify_email/', endpoint='verify_email')
+
+
+api.add_resource(
+    VerifyEmail,
+    '/api/auth/verify_email/',
+    endpoint='verify_email'
+)
 
 
 class VerifyCode(Resource):
@@ -67,6 +73,8 @@ class VerifyCode(Resource):
                 return redirect('/email_preferences/')
             return "Wrong Code, please try again later."
         return redirect('/')
+
+
 api.add_resource(VerifyCode, '/api/auth/verify_code/', endpoint='verify_code')
 
 
@@ -103,7 +111,13 @@ class UpdateEmailPreferences(Resource):
             db.session.commit()
             session['updated'] = True
         return redirect('/success_update/')
-api.add_resource(UpdateEmailPreferences, '/api/auth/update_email_preferences/', endpoint='update')
+
+
+api.add_resource(
+    UpdateEmailPreferences,
+    '/api/auth/update_email_preferences/',
+    endpoint='update'
+)
 
 
 class LogOut(Resource):
@@ -115,4 +129,6 @@ class LogOut(Resource):
         """Simple get request to logout."""
         logout_user()
         return redirect('/')
+
+
 api.add_resource(LogOut, '/api/auth/logout/', endpoint='logout')

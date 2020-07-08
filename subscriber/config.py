@@ -6,9 +6,7 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     """Base configuration."""
-
     DEBUG = False
-    # Flask MAIL config
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USERNAME = 'encearthquakenotification@gmail.com'
@@ -20,8 +18,7 @@ class Config:
 
 class Dev(Config):
     """Configuration to be used in Dev environments."""
-
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:mysecretpassword@localhost:5432/enc_earthquake_email_list"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:mysecretpassword@postgres:5432/enc_earthquake_email_list"
     SECRET_KEY = 'S@MpLe9SeCrEt#KeY'
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -31,12 +28,10 @@ class Dev(Config):
 
 class Prod(Config):
     """Configuration to be used in production."""
-
-    SQLALCHEMY_DATABASE_URI = 'sqlite://:memory:'  # TODO os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = 'sqlite://:memory:'
 
 
 class Test(Dev):
     """Configuration to be used in testing environments."""
-
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     TESTING = True
